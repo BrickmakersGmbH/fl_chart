@@ -447,7 +447,9 @@ class BarChartPainter extends AxisChartPainter<BarChartData> {
     if (bottomTitles.showTitles) {
       final interval = bottomTitles.interval?.toInt() ?? 1;
 
-      for (var index = 0; index < groupBarsPosition.length; index += interval) {
+      for (var index = bottomTitles.intervalOffset;
+          index < groupBarsPosition.length;
+          index += interval) {
         final groupBarPos = groupBarsPosition[index];
 
         final xValue = data.barGroups[index].x.toDouble();
@@ -470,6 +472,24 @@ class BarChartPainter extends AxisChartPainter<BarChartData> {
         canvasWrapper.translate(-(x + tp.width / 2), -(y + tp.height / 2));
         x += translateRotatedPosition(tp.width, bottomTitles.rotateAngle);
         canvasWrapper.drawText(tp, Offset(x, y));
+
+        if (bottomTitles.showTicksOnBorder) {
+          final tickLengthPx = 2;
+          final borderHeightPx = 1;
+
+          final tickX = x + tp.width / 2;
+          final tickY =
+              drawSize.height + getTopOffsetDrawSize(holder) + tickLengthPx + borderHeightPx;
+
+          canvasWrapper.drawLine(
+            Offset(tickX, tickY),
+            Offset(tickX, tickY + tickLengthPx),
+            Paint()
+              ..strokeWidth = 1
+              ..style = PaintingStyle.stroke
+              ..color = bottomTitles.ticksColor,
+          );
+        }
         canvasWrapper.restore();
       }
     }

@@ -264,6 +264,9 @@ class SideTitles with EquatableMixin {
   final double? interval;
   final double rotateAngle;
   final CheckToShowTitle checkToShowTitle;
+  final bool showTicksOnBorder;
+  final Color ticksColor;
+  final int intervalOffset;
 
   /// It draws some title on all axis, per each axis value,
   /// [showTitles] determines showing or hiding this side,
@@ -296,6 +299,9 @@ class SideTitles with EquatableMixin {
     double? interval,
     double? rotateAngle,
     CheckToShowTitle? checkToShowTitle,
+    bool? showTicksOnBorder,
+    Color? ticksColor,
+    int? intervalOffset,
   })  : showTitles = showTitles ?? false,
         getTitles = getTitles ?? defaultGetTitle,
         reservedSize = reservedSize ?? 22,
@@ -304,7 +310,10 @@ class SideTitles with EquatableMixin {
         margin = margin ?? 6,
         interval = interval,
         rotateAngle = rotateAngle ?? 0.0,
-        checkToShowTitle = checkToShowTitle ?? defaultCheckToShowTitle {
+        checkToShowTitle = checkToShowTitle ?? defaultCheckToShowTitle,
+        showTicksOnBorder = showTicksOnBorder ?? false,
+        ticksColor = ticksColor ?? Color(0xff9e9e9e),
+        intervalOffset = intervalOffset ?? 0 {
     if (interval == 0) {
       throw ArgumentError("SideTitles.interval couldn't be zero");
     }
