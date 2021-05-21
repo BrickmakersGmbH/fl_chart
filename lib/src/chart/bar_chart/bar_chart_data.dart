@@ -544,6 +544,9 @@ class BarTouchData extends FlTouchData with EquatableMixin {
   /// Informs the touchResponses
   final Function(BarTouchResponse)? touchCallback;
 
+  /// Show tooltip by default on group index and it's rods, even touch it isn't touched/clicked
+  final Map<int, List<int>>? defaultTooltipOn;
+
   /// You can disable or enable the touch system using [enabled] flag,
   /// if [handleBuiltInTouches] is true, [BarChart] shows a tooltip popup on top of the bars if
   /// touch occurs (or you can show it manually using, [BarChartGroupData.showingTooltipIndicators]),
@@ -562,11 +565,13 @@ class BarTouchData extends FlTouchData with EquatableMixin {
     bool? allowTouchBarBackDraw,
     bool? handleBuiltInTouches,
     Function(BarTouchResponse)? touchCallback,
+    Map<int, List<int>>? defaultTooltipOn,
   })  : touchTooltipData = touchTooltipData ?? BarTouchTooltipData(),
         touchExtraThreshold = touchExtraThreshold ?? const EdgeInsets.all(4),
         allowTouchBarBackDraw = allowTouchBarBackDraw ?? false,
         handleBuiltInTouches = handleBuiltInTouches ?? true,
         touchCallback = touchCallback,
+        defaultTooltipOn = defaultTooltipOn,
         super(enabled ?? true);
 
   /// Copies current [BarTouchData] to a new [BarTouchData],
@@ -578,6 +583,7 @@ class BarTouchData extends FlTouchData with EquatableMixin {
     bool? allowTouchBarBackDraw,
     bool? handleBuiltInTouches,
     Function(BarTouchResponse)? touchCallback,
+    Map<int, List<int>>? defaultTooltipOn,
   }) {
     return BarTouchData(
       enabled: enabled ?? this.enabled,
@@ -586,6 +592,7 @@ class BarTouchData extends FlTouchData with EquatableMixin {
       allowTouchBarBackDraw: allowTouchBarBackDraw ?? this.allowTouchBarBackDraw,
       handleBuiltInTouches: handleBuiltInTouches ?? this.handleBuiltInTouches,
       touchCallback: touchCallback ?? this.touchCallback,
+      defaultTooltipOn: defaultTooltipOn ?? this.defaultTooltipOn,
     );
   }
 
@@ -598,6 +605,7 @@ class BarTouchData extends FlTouchData with EquatableMixin {
         allowTouchBarBackDraw,
         handleBuiltInTouches,
         touchCallback,
+        defaultTooltipOn,
       ];
 }
 

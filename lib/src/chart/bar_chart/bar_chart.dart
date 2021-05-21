@@ -64,6 +64,10 @@ class _BarChartState extends AnimatedWidgetBaseState<BarChart> {
       );
     }
 
+    if (_showingTouchedTooltips.isEmpty) {
+      _setDefaultTooltip();
+    }
+
     return barChartData.copyWith(
       barGroups: newGroups,
     );
@@ -89,6 +93,7 @@ class _BarChartState extends AnimatedWidgetBaseState<BarChart> {
         final spot = touchResponse.spot;
         if (spot == null) {
           _showingTouchedTooltips.clear();
+          _setDefaultTooltip();
           return;
         }
         final groupIndex = spot.touchedBarGroupIndex;
@@ -100,7 +105,15 @@ class _BarChartState extends AnimatedWidgetBaseState<BarChart> {
     } else {
       setState(() {
         _showingTouchedTooltips.clear();
+        _setDefaultTooltip();
       });
+    }
+  }
+
+  void _setDefaultTooltip() {
+    if (widget.data.barTouchData.defaultTooltipOn != null) {
+      widget.data.barTouchData.defaultTooltipOn!
+          .forEach((key, value) => _showingTouchedTooltips[key] = value);
     }
   }
 
