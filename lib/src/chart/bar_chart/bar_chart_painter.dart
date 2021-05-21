@@ -445,6 +445,37 @@ class BarChartPainter extends AxisChartPainter<BarChartData> {
     // Bottom titles
     final bottomTitles = targetData.titlesData.bottomTitles;
     if (bottomTitles.showTitles) {
+      final tickLengthPx = 2;
+      final borderHeightPx = 1;
+
+      if (bottomTitles.showTicksBorder) {
+        final viewSize = canvasWrapper.size;
+        final usableViewSize = getChartUsableDrawSize(viewSize, holder);
+        final verticalInterval = data.gridData.verticalInterval ??
+            getEfficientInterval(viewSize.width, data.horizontalDiff);
+        var verticalSeek = data.minX + verticalInterval;
+
+        final x1 = getPixelX(0, usableViewSize, holder) - tickLengthPx;
+        final y1 = drawSize.height +
+            getTopOffsetDrawSize(holder) +
+            tickLengthPx +
+            borderHeightPx;
+        final x2 =
+            getPixelX(verticalSeek, usableViewSize, holder) + tickLengthPx;
+        final y2 = drawSize.height +
+            getTopOffsetDrawSize(holder) +
+            tickLengthPx +
+            borderHeightPx;
+        canvasWrapper.drawLine(
+          Offset(x1, y1),
+          Offset(x2, y2),
+          Paint()
+            ..strokeWidth = 1
+            ..style = PaintingStyle.stroke
+            ..color = bottomTitles.ticksColor,
+        );
+      }
+
       final interval = bottomTitles.interval?.toInt() ?? 1;
 
       for (var index = bottomTitles.intervalOffset;
@@ -474,9 +505,6 @@ class BarChartPainter extends AxisChartPainter<BarChartData> {
         canvasWrapper.drawText(tp, Offset(x, y));
 
         if (bottomTitles.showTicksOnBorder) {
-          final tickLengthPx = 2;
-          final borderHeightPx = 1;
-
           final tickX = x + tp.width / 2;
           final tickY =
               drawSize.height + getTopOffsetDrawSize(holder) + tickLengthPx + borderHeightPx;
