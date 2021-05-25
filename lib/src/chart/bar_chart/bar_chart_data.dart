@@ -621,6 +621,11 @@ enum TooltipDirection {
   bottom,
 }
 
+enum TooltipStyle {
+  rect,
+  dotWithLine,
+}
+
 /// Holds representation data for showing tooltip popup on top of rods.
 class BarTouchTooltipData with EquatableMixin {
   /// The tooltip background color.
@@ -650,6 +655,9 @@ class BarTouchTooltipData with EquatableMixin {
   /// Controls showing tooltip on top or bottom, default is auto.
   final TooltipDirection direction;
 
+  /// Change style of the tooltip
+  final TooltipStyle style;
+
   /// if [BarTouchData.handleBuiltInTouches] is true,
   /// [BarChart] shows a tooltip popup on top of rods automatically when touch happens,
   /// otherwise you can show it manually using [BarChartGroupData.showingTooltipIndicators].
@@ -673,6 +681,7 @@ class BarTouchTooltipData with EquatableMixin {
     bool? fitInsideHorizontally,
     bool? fitInsideVertically,
     TooltipDirection? direction,
+    TooltipStyle? style,
   })  : tooltipBgColor = tooltipBgColor ?? Colors.white,
         tooltipRoundedRadius = tooltipRoundedRadius ?? 4,
         tooltipPadding = tooltipPadding ?? const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -682,6 +691,7 @@ class BarTouchTooltipData with EquatableMixin {
         fitInsideHorizontally = fitInsideHorizontally ?? false,
         fitInsideVertically = fitInsideVertically ?? false,
         direction = direction ?? TooltipDirection.auto,
+        style = style ?? TooltipStyle.rect,
         super();
 
   /// Used for equality check, see [EquatableMixin].
@@ -695,6 +705,7 @@ class BarTouchTooltipData with EquatableMixin {
         getTooltipItem,
         fitInsideHorizontally,
         fitInsideVertically,
+        style
       ];
 }
 

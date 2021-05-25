@@ -60,9 +60,18 @@ class BarChartPainter extends AxisChartPainter<BarChartData> {
           continue;
         }
         final barRod = barGroup.barRods[j];
+        final style = targetData.barTouchData.touchTooltipData.style;
 
-        _drawTouchTooltip(canvasWrapper, _groupBarsPosition!,
-            targetData.barTouchData.touchTooltipData, barGroup, i, barRod, j, holder);
+        switch (style) {
+          case TooltipStyle.dotWithLine:
+            _drawDotWithLineTouchTooltip(canvasWrapper, _groupBarsPosition!,
+                targetData.barTouchData.touchTooltipData, barGroup, i, barRod, j, holder);
+            break;
+          default:
+            _drawTouchTooltip(canvasWrapper, _groupBarsPosition!,
+                targetData.barTouchData.touchTooltipData, barGroup, i, barRod, j, holder);
+            break;
+        }
       }
     }
   }
@@ -657,6 +666,73 @@ class BarChartPainter extends AxisChartPainter<BarChartData> {
       rect.topCenter.dy + top,
     );
     canvasWrapper.drawText(tp, drawOffset);
+  }
+
+  void _drawDotWithLineTouchTooltip(
+    CanvasWrapper canvasWrapper,
+    List<_GroupBarsPosition> groupPositions,
+    BarTouchTooltipData tooltipData,
+    BarChartGroupData showOnBarGroup,
+    int barGroupIndex,
+    BarChartRodData showOnRodData,
+    int barRodIndex,
+    PaintHolder<BarChartData> holder,
+  ) {
+    final viewSize = canvasWrapper.size;
+    final chartUsableSize = getChartUsableDrawSize(viewSize, holder);
+    final topPadding = -30.0;
+    final paddingFromLineToBar = 5.0;
+
+    final tooltipItem = tooltipData.getTooltipItem(
+      showOnBarGroup,
+      barGroupIndex,
+      showOnRodData,
+      barRodIndex,
+    );
+
+    if (tooltipItem == null) {
+      return;
+    }
+
+    final span = TextSpan(
+      style: tooltipItem.textStyle,
+      text: tooltipItem.text,
+      children: tooltipItem.children,
+    );
+
+    final tp = TextPainter(
+        text: span,
+        textAlign: tooltipItem.textAlign,
+        textDirection: tooltipItem.textDirection,
+        textScaleFactor: holder.textScale);
+    tp.layout(maxWidth: tooltipData.maxContentWidth);
+
+    /// if we have multiple bar lines,
+    /// there are more than one FlCandidate on touch area,
+    /// we should get the most top FlSpot Offset to draw the tooltip on top of it
+    final barOffset = Offset(
+      groupPositions[barGroupIndex].barsX[barRodIndex],
+      getPixelY(showOnRodData.y, chartUsableSize, holder),
+    );
+
+    var textX = barOffset.dx - tp.width / 2.0;
+
+    if (textX < 0) {
+      textX = 0;
+    } else if (textX > (viewSize.width - tp.width)) {
+      textX = viewSize.width - tp.width;
+    }
+    canvasWrapper.drawText(tp, Offset(textX, topPadding));
+
+    final paint = Paint()
+      ..color = tooltipData.tooltipBgColor
+      ..strokeWidth = 1;
+
+    final circleCenter = Offset(barOffset.dx, topPadding + tp.height + 2);
+
+    canvasWrapper.drawCircle(circleCenter, 2, paint);
+    canvasWrapper.drawLine(Offset(barOffset.dx, circleCenter.dy),
+        Offset(barOffset.dx, barOffset.dy - paddingFromLineToBar), paint);
   }
 
   /// We add our needed horizontal space to parent needed.
