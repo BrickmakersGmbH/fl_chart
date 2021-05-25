@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'bar_chart/bar_chart_page.dart';
 import 'bar_chart/bar_chart_page2.dart';
 import 'bar_chart/bar_chart_page3.dart';
+import 'bar_chart/bar_chart_page4.dart';
 import 'line_chart/line_chart_page.dart';
 import 'line_chart/line_chart_page2.dart';
 import 'line_chart/line_chart_page3.dart';
@@ -46,8 +47,9 @@ class _MyHomePageState extends State<MyHomePage> {
   final _duration = Duration(milliseconds: 300);
   final _curve = Curves.easeInOutCubic;
   final _pages = [
-    LineChartPage(),
+    BarChartPage4(),
     BarChartPage(),
+    LineChartPage(),
     BarChartPage2(),
     PieChartPage(),
     LineChartPage2(),
@@ -73,7 +75,9 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       body: SafeArea(
         child: PageView(
-          physics: kIsWeb ? NeverScrollableScrollPhysics() : AlwaysScrollableScrollPhysics(),
+          physics: kIsWeb
+              ? NeverScrollableScrollPhysics()
+              : AlwaysScrollableScrollPhysics(),
           controller: _controller,
           children: _pages,
         ),
@@ -88,7 +92,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   Visibility(
                     visible: _currentPage != 0,
                     child: FloatingActionButton(
-                      onPressed: () => _controller.previousPage(duration: _duration, curve: _curve),
+                      onPressed: () => _controller.previousPage(
+                          duration: _duration, curve: _curve),
                       child: Icon(Icons.chevron_left_rounded),
                     ),
                   ),
@@ -96,7 +101,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   Visibility(
                     visible: _currentPage != _pages.length - 1,
                     child: FloatingActionButton(
-                      onPressed: () => _controller.nextPage(duration: _duration, curve: _curve),
+                      onPressed: () => _controller.nextPage(
+                          duration: _duration, curve: _curve),
                       child: Icon(Icons.chevron_right_rounded),
                     ),
                   ),
