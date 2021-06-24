@@ -92,6 +92,7 @@ class _BarChartState extends AnimatedWidgetBaseState<BarChart> {
       setState(() {
         final spot = touchResponse.spot;
         if (spot == null) {
+          if (!widget.data.barTouchData.autoHideTooltip) return;
           _showingTouchedTooltips.clear();
           _setDefaultTooltip();
           return;
@@ -99,10 +100,14 @@ class _BarChartState extends AnimatedWidgetBaseState<BarChart> {
         final groupIndex = spot.touchedBarGroupIndex;
         final rodIndex = spot.touchedRodDataIndex;
 
-        _showingTouchedTooltips.clear();
+        if (widget.data.barTouchData.autoHideTooltip) ;
+        {
+          _showingTouchedTooltips.clear();
+        }
         _showingTouchedTooltips[groupIndex] = [rodIndex];
       });
     } else {
+      if (!widget.data.barTouchData.autoHideTooltip) return;
       setState(() {
         _showingTouchedTooltips.clear();
         _setDefaultTooltip();

@@ -114,6 +114,7 @@ class _BarChartSample0State extends State<BarChartSample0> {
                   defaultTooltipOn: {
                     1: [0],
                   },
+                  autoHideTooltip: false,
                   touchTooltipData: BarTouchTooltipData(
                     style: TooltipStyle.dotWithLine,
                     fitInsideHorizontally: false,
@@ -127,15 +128,9 @@ class _BarChartSample0State extends State<BarChartSample0> {
                     },
                   ),
                   touchCallback: (barTouchResponse) {
-                    if (barTouchResponse.spot != null &&
-                        barTouchResponse.touchInput is! PointerUpEvent &&
-                        barTouchResponse.touchInput is! PointerExitEvent) {
+                    if (barTouchResponse.spot != null) {
                       setState(() {
                         touchedIndex = barTouchResponse.spot!.touchedBarGroupIndex;
-                      });
-                    } else {
-                      setState(() {
-                        touchedIndex = 1;
                       });
                     }
                   }),

@@ -547,6 +547,9 @@ class BarTouchData extends FlTouchData with EquatableMixin {
   /// Show tooltip by default on group index and it's rods, even touch it isn't touched/clicked
   final Map<int, List<int>>? defaultTooltipOn;
 
+  /// Hides the tooltip, when touch or click isn't on a rod
+  final bool autoHideTooltip;
+
   /// You can disable or enable the touch system using [enabled] flag,
   /// if [handleBuiltInTouches] is true, [BarChart] shows a tooltip popup on top of the bars if
   /// touch occurs (or you can show it manually using, [BarChartGroupData.showingTooltipIndicators]),
@@ -566,12 +569,14 @@ class BarTouchData extends FlTouchData with EquatableMixin {
     bool? handleBuiltInTouches,
     Function(BarTouchResponse)? touchCallback,
     Map<int, List<int>>? defaultTooltipOn,
+    bool? autoHideTooltip = true,
   })  : touchTooltipData = touchTooltipData ?? BarTouchTooltipData(),
         touchExtraThreshold = touchExtraThreshold ?? const EdgeInsets.all(4),
         allowTouchBarBackDraw = allowTouchBarBackDraw ?? false,
         handleBuiltInTouches = handleBuiltInTouches ?? true,
         touchCallback = touchCallback,
         defaultTooltipOn = defaultTooltipOn,
+        autoHideTooltip = autoHideTooltip ?? true,
         super(enabled ?? true);
 
   /// Copies current [BarTouchData] to a new [BarTouchData],
@@ -584,6 +589,7 @@ class BarTouchData extends FlTouchData with EquatableMixin {
     bool? handleBuiltInTouches,
     Function(BarTouchResponse)? touchCallback,
     Map<int, List<int>>? defaultTooltipOn,
+    bool? autoHideTooltip,
   }) {
     return BarTouchData(
       enabled: enabled ?? this.enabled,
@@ -593,6 +599,7 @@ class BarTouchData extends FlTouchData with EquatableMixin {
       handleBuiltInTouches: handleBuiltInTouches ?? this.handleBuiltInTouches,
       touchCallback: touchCallback ?? this.touchCallback,
       defaultTooltipOn: defaultTooltipOn ?? this.defaultTooltipOn,
+      autoHideTooltip: autoHideTooltip ?? this.autoHideTooltip,
     );
   }
 
@@ -606,6 +613,7 @@ class BarTouchData extends FlTouchData with EquatableMixin {
         handleBuiltInTouches,
         touchCallback,
         defaultTooltipOn,
+        autoHideTooltip,
       ];
 }
 
